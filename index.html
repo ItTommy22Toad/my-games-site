@@ -4,57 +4,116 @@
   <title>Home</title>
   <link rel="icon" type="image/x-icon" href="https://homeworkkk-green.vercel.app/favicon.png">
 
-  <!-- WARNING, IF ANYONE CLAIMS TO OWN THE SOUCECODE, THEY ARE LYING TO YOURE UGLY FACE, THIS TEXT IS THE PROOF THAT ItTommy22Toad MADE THIS SITE AND NOT THE PERSON WHOS HOSTING THE SITE-->
-  <script>
-    window.onload = function() {
-      alert("BEFORE YOU PLAY, READ ME FIRST!!!                         .                     ok, listen here idiot! This is a free to play site, me as ItTommy22Toad, the creator of the site, wont accept any type of payment or money, if you got access to the site by a type of payment or paid someone to get access to it, youre an stupid idiot and a victim of piracy and prob wont get refunded, go to https://github.com/ItTommy22Toad/my-games-site to see the github of this page, if anyone claiming to have created the site, is lying to youre ugly face, this project can be deployed on vercel by anyone because no one how to code like me, homeworkkk-green.vercel.app is the official webapp, by clicking 'ok', you are accepting that you have read this and known what are the offical sites and know who made the project!");
-      alert("some games may not work because you ether have an ad blocker or theres nothing in the files and i didnt notice, if so, ill fix it soon, trust");
-    };
-  </script>
   <style>
-  body {
-    background-color: #490202;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 40px;
-    margin: 0;
-  }
+    /* Your existing styles */
+    body {
+      background-color: #490202;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+      margin: 0;
+    }
 
-  .button-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    max-width: 1200px;
-    width: 100%;
-  }
+    /* POPUP STYLES */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
 
-  button {
-    background-color: #2e0101;
-    color: white;
-    border: 2px solid #2f0000;
-    padding: 15px 20px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-  }
+    #popup {
+      background: #2e0101;
+      color: white;
+      padding: 30px;
+      border: 3px solid #ff0000;
+      border-radius: 12px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+    }
 
-  button:hover {
-    background-color: #d70000; 
-    border-color: #ff0000;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(215, 0, 0, 0.4);
-  }
+    #popup h2 { color: #ff0000; margin-top: 0; }
+    
+    #popup p { line-height: 1.5; font-size: 14px; }
 
-  button:active {
-    transform: translateY(1px);
-  }
-</style>
+    #popup button {
+      margin-top: 20px;
+      background: #d70000;
+      width: 100%;
+    }
+
+    /* Your existing button container */
+    .button-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    button {
+      background-color: #2e0101;
+      color: white;
+      border: 2px solid #2f0000;
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    button:hover {
+      background-color: #d70000; 
+      border-color: #ff0000;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(215, 0, 0, 0.4);
+    }
+  </style>
 </head>
 <body>
+
+<!-- POPUP HTML -->
+<div id="overlay">
+  <div id="popup">
+    <h2>READ ME FIRST!!!</h2>
+    <p><b>Listen here!</b> This is a free site created by <b>ItTommy22Toad</b>. If you paid for access, you got scammed. By going to <a href="https://github.com/ItTommy22Toad/my-games-site" style="color: #ff0000;">GitHub</a>, you can see the source code is owned by me. By clicking 'I UNDERSTAND', you agree that you know the official sites and who actually made this project. The games are ether made by me or downloaded from sites like gn-math or emulator.js</p>
+    
+    <p style="color: #aaa;"><i>Note: Some games might need ad-blockers disabled to run correctly.</i></p>
+
+    <!-- CHECKBOX SECTION -->
+    <div style="margin: 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <input type="checkbox" id="agreeCheck" onchange="toggleButton()" style="width: 20px; height: 20px; cursor: pointer;">
+      <label for="agreeCheck" style="cursor: pointer; font-weight: bold;">I confirm I read this and know ItTommy22Toad made this site.</label>
+    </div>
+
+    <!-- DISABLED BUTTON BY DEFAULT -->
+    <button id="closeBtn" onclick="document.getElementById('overlay').style.display='none'" disabled style="opacity: 0.5; cursor: not-allowed;">I UNDERSTAND</button>
+  </div>
+</div>
+
+<script>
+  function toggleButton() {
+    const checkbox = document.getElementById('agreeCheck');
+    const button = document.getElementById('closeBtn');
+    
+    if (checkbox.checked) {
+      button.disabled = false;
+      button.style.opacity = "1";
+      button.style.cursor = "pointer";
+    } else {
+      button.disabled = true;
+      button.style.opacity = "0.5";
+      button.style.cursor = "not-allowed";
+    }
+  }
+</script>
 
 <div class="button-container">
   <button type="button" onclick="window.location.href='1.8.8.html'">Minecraft 1.8.8</button>
