@@ -113,9 +113,30 @@
     }
   }
 </script>
-<div class="search-wrapper" style="text-align: center; margin-bottom: 20px;">
-  <input type="text" id="gameSearch" onkeyup="filterGames()" placeholder="Search for a game..." style="padding: 10px; width: 80%; max-width: 400px; border-radius: 5px; border: 1px solid #ccc;">
-</div>
+</script>
+
+  <div class="search-wrapper" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+    <input type="text" id="gameSearch" onkeyup="filterGames()" placeholder="Search for a game..." 
+           style="padding: 12px; width: 80%; max-width: 400px; border-radius: 8px; border: 2px solid #560101; background-color: #222; color: white; font-size: 16px;">
+  </div>
+
+  <script>
+    function filterGames() {
+      var input = document.getElementById('gameSearch');
+      var filter = input.value.toLowerCase();
+      var container = document.querySelector('.button-container');
+      var buttons = container.getElementsByTagName('button');
+
+      for (var i = 0; i < buttons.length; i++) {
+        var name = buttons[i].textContent || buttons[i].innerText;
+        if (name.toLowerCase().indexOf(filter) > -1) {
+          buttons[i].style.display = "";
+        } else {
+          buttons[i].style.display = "none";
+        }
+      }
+    }
+  </script>
 <div class="button-container">
   <button type="button" onclick="window.location.href='1.8.8.html'">Minecraft 1.8.8</button>
   <button type="button" onclick="window.location.href='1.12.2.1.html'">Minecraft 1.12.2</button>
