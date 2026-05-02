@@ -1,143 +1,192 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Home</title>
-  <link rel="icon" type="image/x-icon" href="https://homeworkkk-green.vercel.app/favicon.png">
+  <title id="tabTitle">Home</title>
+  <link id="dynamicFavicon" rel="icon" type="image/x-icon" href="https://homeworkkk-green.vercel.app/favicon.png">
 
   <style>
-    /* IF YOU SEE THIS PIECE OF TEXT, ITS PROOF THAT ItTommy22Toad MADE THIS CODE, NO ONE ELSE MADE IT*/
-    body {
-      background-color: #490202;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      padding: 40px;
-      margin: 0;
+    :root {
+      --bg-color: #000;
+      --text-color: #ffffff;
+      --accent-red: #ff0000;
+      --panel-bg: #2e0101;
+      --btn-bg: rgba(46, 1, 1, 0.9);
+      --input-bg: #222;
+      --search-border: #560101;
+      --theater-bar-bg: #111;
+      --theater-btn-bg: #444;
     }
 
-    #overlay {
+    body.light-mode {
+      --bg-color: #f5f5f5;
+      --text-color: #1a1a1a;
+      --accent-red: #ff4d4d;
+      --panel-bg: #ffffff;
+      --btn-bg: rgba(255, 77, 77, 0.1);
+      --input-bg: #ffffff;
+      --search-border: #ff4d4d;
+      --theater-bar-bg: #ffffff;
+      --theater-btn-bg: #eeeeee;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      margin: 0;
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    #background-layer {
+      position: fixed;
+      top: -10%; left: -10%; width: 120%; height: 120%;
+      background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      transition: transform 0.1s ease-out, opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    body.light-mode #background-layer { opacity: 0.1; }
+
+    #tint-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(139, 0, 0, 0.6);
+      z-index: 5;
+      display: none;
+      pointer-events: none;
+    }
+
+    #settingsToggle {
+      position: fixed; top: 20px; right: 20px;
+      background: rgba(0, 0, 0, 0.7); color: white;
+      border: 1px solid var(--accent-red); border-radius: 50%;
+      width: 40px; height: 40px; cursor: pointer; z-index: 1001;
+      display: flex; justify-content: center; align-items: center; font-size: 20px;
+    }
+
+    #settingsPanel {
+      display: none; position: fixed; top: 70px; right: 20px;
+      background: var(--panel-bg); border: 2px solid var(--accent-red);
+      padding: 20px; border-radius: 12px; z-index: 1001;
+      color: var(--text-color); width: 250px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .site-title {
+      color: var(--accent-red); font-size: 48px; margin-top: 0; margin-bottom: 20px;
+      text-transform: uppercase; letter-spacing: 4px;
+      font-weight: 800; z-index: 10;
+    }
+
+    #theaterMode {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: black; z-index: 9999; flex-direction: column;
+    }
+
+    #theaterBar {
+      height: 50px; 
+      background: var(--theater-bar-bg); 
       display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+      justify-content: flex-end; align-items: center;
+      padding: 0 15px; gap: 10px; 
+      border-bottom: 1px solid var(--accent-red);
+    }
+
+    #theaterBar button {
+      padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid var(--accent-red);
+    }
+
+    .fs-btn { background: var(--theater-btn-bg); color: var(--text-color); }
+    .close-btn { background: var(--accent-red); color: white; }
+
+    iframe { flex: 1; border: none; width: 100%; height: 100%; }
+
+    .button-container {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px; max-width: 1200px; width: 100%; z-index: 10;
+    }
+
+    .game-button {
+      background-color: var(--btn-bg); color: var(--text-color);
+      border: 2px solid var(--accent-red); padding: 15px 20px;
+      border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .game-button:hover { background-color: var(--accent-red); color: white; transform: translateY(-3px); }
+
+
+    #overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85); display: flex;
+      justify-content: center; align-items: center; z-index: 10000;
     }
 
     #popup {
-      background: #2e0101;
-      color: white;
-      padding: 30px;
-      border: 3px solid #ff0000;
-      border-radius: 12px;
-      max-width: 600px;
-      text-align: center;
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+      background: var(--panel-bg); color: var(--text-color); padding: 30px;
+      border: 3px solid var(--accent-red); border-radius: 12px; max-width: 600px; text-align: center;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
     }
 
-    #popup h2 { color: #ff0000; margin-top: 0; }
-    
-    #popup p { line-height: 1.5; font-size: 14px; }
-
-    #popup button {
-      margin-top: 20px;
-      background: #d70000;
-      width: 100%;
+    #gameSearch {
+      padding: 12px; width: 80%; max-width: 400px; border-radius: 8px; 
+      border: 2px solid var(--search-border); background-color: var(--input-bg); 
+      color: var(--text-color); font-size: 16px; outline: none;
     }
-
-    .button-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      max-width: 1200px;
-      width: 100%;
-    }
-
-.game-button:hover {
-  transform: scale(1.05);
-}
-
-    button {
-      background-color: #2e0101;
-      color: white;
-      border: 2px solid #2f0000;
-      padding: 15px 20px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-align: center;
-    }
-
-    button:hover {
-      background-color: #d70000; 
-      border-color: #ff0000;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(215, 0, 0, 0.4);
-    }
-    
   </style>
 </head>
 <body>
 
+<div id="background-layer"></div>
+<div id="tint-overlay"></div>
+
+<button id="settingsToggle" onclick="toggleSettings()">⚙️</button>
+<div id="settingsPanel">
+  <h3 style="margin-top:0; color:var(--accent-red);">Settings</h3>
+  <div style="margin-bottom:10px;"><label style="cursor:pointer;"><input type="checkbox" id="themeToggle" onchange="updateTheme()"> Light Mode⬛⬜</label></div>
+  <div style="margin-bottom:10px;"><label style="cursor:pointer;"><input type="checkbox" id="tintToggle" onchange="updateTint()"> Enable Red Tint🟥</label></div>
+  <div style="margin-bottom:10px;"><label style="font-size: 12px;">BG Image🌇:</label><br><input type="file" id="bgUpload" accept="image/*" onchange="uploadBG()"></div>
+  <div style="margin-bottom:10px;"><label style="font-size: 12px;">Favicon🖼️:</label><br><input type="file" id="favUpload" accept="image/*" onchange="uploadFav()"></div>
+  <div style="margin-bottom:10px;"><label style="font-size: 12px;">Fake Title🏷️:</label><br><input type="text" id="titleInput" onkeyup="updateTitle()" style="width:90%; background:var(--input-bg); color:var(--text-color); border:1px solid var(--accent-red); padding:5px; border-radius:4px;"></div>
+  <button onclick="resetSettings()" style="background: #444; width: 100%; color: white; border: none; padding: 8px; margin-top: 10px; cursor: pointer; border-radius: 4px;">Reset to Default</button>
+</div>
+
+<div id="theaterMode">
+  <div id="theaterBar">
+    <button class="fs-btn" onclick="goFullScreen()">⛶ Fullscreen</button>
+    <button class="close-btn" onclick="closeTheater()">✕ Close</button>
+  </div>
+  <iframe id="gameIframe" src=""></iframe>
+</div>
+
 <div id="overlay">
   <div id="popup">
     <h2>READ ME FIRST!!!</h2>
-    <p><b>Listen here!</b> This is a free site created by <b>ItTommy22Toad</b>. If you paid for access, you got scammed. I don't need you ugly ahh money, you're broke anyways. By going to <a href="https://github.com/ItTommy22Toad/my-games-site" style="color: #ff0000;">my Github by clicking here</a>, you can see the source code is owned by me. By clicking visiting this site, you agree that you know the official sites and who actually made this project. The games are ether made by me or downloaded from sites like gn-math or emulator.js, some games may ask for some permission like camera permission, its commonly used on emulating DS games, you dont have to give it permission, but if you want the full experience, you can allow it, join our Revolt/Stoat Server at: <a href="https://stt.gg/MGP6xyww" style="color: #ff0000;">https://stt.gg/MGP6xyww</a>, its discord server is comming soon!</p>
+    <p><b>Listen here!</b> This is a free site created by <b>ItTommy22Toad</b>. If you paid for access, you got scammed. I don't need you ugly ahh money, you're broke anyways. By going to <a href="https://github.com/ItTommy22Toad/my-games-site" style="color: var(--accent-red);">my Github by clicking here</a>, you can see the source code is owned by me. By clicking visiting this site, you agree that you know the official sites and who actually made this project. The games are ether made by me or downloaded from sites like gn-math or emulator.js, some games may ask for some permission like camera permission, its commonly used on emulating DS games, you dont have to give it permission, but if you want the full experience, you can allow it, join our Revolt/Stoat Server at: <a href="https://stt.gg/MGP6xyww" style="color: var(--accent-red);">https://stt.gg/MGP6xyww</a>, its discord server is comming soon!</p>
     
-    <p style="color: #aaa;"><i>Note: Some games might need ad-blockers disabled to run correctly.</i></p>
-
     <div style="margin: 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px;">
-      <input type="checkbox" id="agreeCheck" onchange="toggleButton()" style="width: 20px; height: 20px; cursor: pointer;">
+      <input type="checkbox" id="agreeCheck" onchange="toggleAgreeButton()" style="width: 20px; height: 20px; cursor: pointer;">
       <label for="agreeCheck" style="cursor: pointer; font-weight: bold;">I confirm and know how to read and know ItTommy22Toad made this site.</label>
     </div>
 
-    <button id="closeBtn" onclick="document.getElementById('overlay').style.display='none'" disabled style="opacity: 0.5; cursor: not-allowed;">I Understand and know how to read!</button>
+    <button id="closeBtn" onclick="acceptTerms()" disabled style="opacity: 0.5; cursor: not-allowed; padding: 10px 20px; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-weight: bold;">I Understand and know how to read!</button>
   </div>
 </div>
 
-<script>
-  function toggleButton() {
-    const checkbox = document.getElementById('agreeCheck');
-    const button = document.getElementById('closeBtn');
-    
-    if (checkbox.checked) {
-      button.disabled = false;
-      button.style.opacity = "1";
-      button.style.cursor = "pointer";
-    } else {
-      button.disabled = true;
-      button.style.opacity = "0.5";
-      button.style.cursor = "not-allowed";
-    }
-  }
-</script>
-</script>
+<h1 class="site-title">GAME HUB</h1>
 
-  <div class="search-wrapper" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
-    <input type="text" id="gameSearch" onkeyup="filterGames()" placeholder="Search for a game..." 
-           style="padding: 12px; width: 80%; max-width: 400px; border-radius: 8px; border: 2px solid #560101; background-color: #222; color: white; font-size: 16px;">
-  </div>
+<div class="search-wrapper" style="text-align: center; margin-bottom: 20px;">
+  <input type="text" id="gameSearch" onkeyup="filterGames()" placeholder="Search for a game...">
+</div>
 
-  <script>
-    function filterGames() {
-      var input = document.getElementById('gameSearch');
-      var filter = input.value.toLowerCase();
-      var container = document.querySelector('.button-container');
-      var buttons = container.getElementsByTagName('button');
-
-      for (var i = 0; i < buttons.length; i++) {
-        var name = buttons[i].textContent || buttons[i].innerText;
-        if (name.toLowerCase().indexOf(filter) > -1) {
-          buttons[i].style.display = "";
-        } else {
-          buttons[i].style.display = "none";
-        }
-      }
-    }
-  </script>
 <div class="button-container">
   <button type="button" class="game-button" onclick="window.location.href='help-with-something.html'">ChatBot AI by ItTommy22Toad</button>
   <button type="button" class="game-button" onclick="window.location.href='chat.html'">ChatApp by ItTommy22Toad</button>
@@ -184,7 +233,7 @@
   <button type="button" class="game-button" onclick="window.location.href='fnaf-custom.html'">Five nights at freddys Ultimate Custom Night </button>
   <button type="button" class="game-button" onclick="window.location.href='fnaf-ps.html'">Five nights at freddys Pizza simulator</button>
   <button type="button" class="game-button" onclick="window.location.href='ovo-2.html'">OVO 2</button>
-  <button type="button" class="game-button" onclick="window.location.href='fnf.html'">Friday Nigh funkin</button>
+  <button type="button" class="game-button" onclick="window.location.href='fnf.html'">Friday Night funkin</button>
   <button type="button" class="game-button" onclick="window.location.href='1.21.4.html'">Minecraft 1.21.4 Fake</button>
   <button type="button" class="game-button" onclick="window.location.href='ovo-3d.html'">OVO 3D</button>
   <button type="button" class="game-button" onclick="window.location.href='faw-2.html'">Fireboy and Watergirl 2</button>
@@ -199,22 +248,130 @@
   <button type="button" class="game-button" onclick="window.location.href='steal_brainrot_online.html'">Steal Brainrot Online</button>
   <button type="button" class="game-button" onclick="window.location.href='bitlife.html'">Bitlife</button>
   <button type="button" class="game-button" onclick="window.location.href='clash_of_vikings.html'">Clash of Clans Fake</button>
-  <button type="button" class="game-button" onclick="window.location.href='baldis_basics classic_remastered.html'">Baldi's Basics Classic Remastered</button>
+  <button type="button" class="game-button" onclick="window.location.href='baldis_basics_classic_remastered.html'">Baldi's Basics Classic Remastered</button>
   <button type="button" class="game-button" onclick="window.location.href='retro_bowl.html'">Retro Bowl</button>
   <button type="button" class="game-button" onclick="window.location.href='tetris.html'">Tetris</button>
   <button type="button" class="game-button" onclick="window.location.href='cookie_clicker.html'">Cookie Clicker</button>
   <button type="button" class="game-button" onclick="window.location.href='tomodachi_collection.html'">Tomodachi Collection</button>
   <button type="button" class="game-button" onclick="window.location.href='pokemon_fire_red.html'">Pokemon Fire Red</button>
   <button type="button" class="game-button" onclick="window.location.href='zelda_ocarina_of_time.html'">Zelda Ocarina of Time</button>
-  <button type="button" class="game-button" onclick="window.location.href='zelda_majoras_mask'">Zelda majora's Mask</button>
+  <button type="button" class="game-button" onclick="window.location.href='zelda_majoras_mask.html'">Zelda majora's Mask</button>
   <button type="button" class="game-button" onclick="window.location.href='pokemon_heartgold.html'">Pokemon HeartGold</button>
   <button type="button" class="game-button" onclick="window.location.href='terraria.html'">Terraria</button>
-  <button type="button" class="game-button" onclick="window.location.href='pizza_tower_scoutdigo.html'">Pizza Tower Scoutdige</button>
+  <button type="button" class="game-button" onclick="window.location.href='pizza_tower_scoutdigo.html'">Pizza Tower Scoutdigo</button>
   <button type="button" class="game-button" onclick="window.location.href='bad_monday_simulator.html'">bad monday Simulator</button>
   <button type="button" class="game-button" onclick="window.location.href='uno.html'">Uno 'Scratch'</button>
   <button type="button" class="game-button" onclick="window.location.href='private_search.html'">Proxy'</button>
   <button type="button" class="game-button" onclick="window.location.href='work-from-class.gif'">Click me</button>
 </div>
+
+<script>
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.game-button');
+    if (btn) {
+      e.preventDefault(); e.stopImmediatePropagation(); window.stop(); 
+      const match = btn.getAttribute('onclick').match(/'([^']+)'/);
+      if (match && match[1]) openTheater(match[1]);
+    }
+  }, true);
+
+  function openTheater(url) {
+    document.getElementById('gameIframe').src = url;
+    document.getElementById('theaterMode').style.display = 'flex';
+  }
+
+  function closeTheater() {
+    document.getElementById('gameIframe').src = '';
+    document.getElementById('theaterMode').style.display = 'none';
+  }
+
+  function updateTheme() {
+    const isLight = document.getElementById('themeToggle').checked;
+    isLight ? document.body.classList.add('light-mode') : document.body.classList.remove('light-mode');
+    localStorage.setItem('lightMode', isLight);
+  }
+
+  function updateTint() {
+    const isChecked = document.getElementById('tintToggle').checked;
+    document.getElementById('tint-overlay').style.display = isChecked ? 'block' : 'none';
+    localStorage.setItem('redTint', isChecked);
+  }
+
+  function updateTitle() {
+    const val = document.getElementById('titleInput').value;
+    document.title = val || "Home";
+    localStorage.setItem('customTitle', val);
+  }
+
+  function uploadBG() {
+    const file = document.getElementById('bgUpload').files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      document.getElementById('background-layer').style.backgroundImage = `url(${reader.result})`;
+      localStorage.setItem('customBG', reader.result);
+    }
+    if (file) reader.readAsDataURL(file);
+  }
+
+  function uploadFav() {
+    const file = document.getElementById('favUpload').files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      document.getElementById('dynamicFavicon').href = reader.result;
+      localStorage.setItem('customFav', reader.result);
+    }
+    if (file) reader.readAsDataURL(file);
+  }
+
+  function resetSettings() { localStorage.clear(); location.reload(); }
+
+  function toggleSettings() {
+    const panel = document.getElementById('settingsPanel');
+    panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+  }
+
+
+  window.onload = function() {
+    if (sessionStorage.getItem('hasAgreed') === 'true') document.getElementById('overlay').style.display = 'none';
+    if (localStorage.getItem('lightMode') === 'true') { document.getElementById('themeToggle').checked = true; updateTheme(); }
+    if (localStorage.getItem('redTint') === 'true') { document.getElementById('tintToggle').checked = true; updateTint(); }
+    if (localStorage.getItem('customTitle')) { document.getElementById('titleInput').value = localStorage.getItem('customTitle'); updateTitle(); }
+    if (localStorage.getItem('customBG')) document.getElementById('background-layer').style.backgroundImage = `url(${localStorage.getItem('customBG')})`;
+    if (localStorage.getItem('customFav')) document.getElementById('dynamicFavicon').href = localStorage.getItem('customFav');
+  };
+
+  function acceptTerms() {
+    document.getElementById('overlay').style.display = 'none';
+    sessionStorage.setItem('hasAgreed', 'true');
+  }
+
+  function toggleAgreeButton() {
+    const checkbox = document.getElementById('agreeCheck');
+    const button = document.getElementById('closeBtn');
+    button.disabled = !checkbox.checked;
+    button.style.opacity = checkbox.checked ? "1" : "0.5";
+    button.style.cursor = checkbox.checked ? "pointer" : "not-allowed";
+  }
+
+  function filterGames() {
+    var filter = document.getElementById('gameSearch').value.toLowerCase();
+    document.querySelectorAll('.game-button').forEach(btn => {
+      btn.style.display = btn.innerText.toLowerCase().includes(filter) ? "" : "none";
+    });
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    let x = e.clientX / window.innerWidth;
+    let y = e.clientY / window.innerHeight;
+    document.getElementById('background-layer').style.transform = `translate(-${x * 25}px, -${y * 25}px)`;
+  });
+
+  function goFullScreen() {
+    const iframe = document.getElementById('gameIframe');
+    if (iframe.requestFullscreen) iframe.requestFullscreen();
+    else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+  }
+</script>
 
 </body>
 </html>
