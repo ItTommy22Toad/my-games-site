@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="tabTitle">Home</title>
+  <link id="dynamicFavicon" rel="icon" type="image/x-icon" href="https://homeworkkk-green.vercel.app/favicon.png">
+
+  <style>
+    :root {
+      --bg-color: #000;
+      --text-color: #ffffff;
+      --accent-red: #ff0000;
+      --panel-bg: #2e0101;
+      --btn-bg: rgba(46, 1, 1, 0.9);
+      --input-bg: #222;
+      --search-border: #560101;
+      --theater-bar-bg: #111;
+      --theater-btn-bg: #444;
+    }
+
+    body.light-mode {
+      --bg-color: #f5f5f5;
+      --text-color: #1a1a1a;
+      --accent-red: #ff4d4d;
+      --panel-bg: #ffffff;
+      --btn-bg: #ffffff;
+      --input-bg: #ffffff;
+      --search-border: #ff4d4d;
+      --theater-bar-bg: #ffffff;
+      --theater-btn-bg: #eeeeee;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      margin: 0;
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    #background-layer {
+      position: fixed;
+      top: -10%; left: -10%; width: 120%; height: 120%;
+      background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      transition: transform 0.1s ease-out, opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    #tint-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(139, 0, 0, 0.4);
+      z-index: 5; display: none; pointer-events: none;
+    }
+
+    #settingsToggle {
+      position: fixed; top: 20px; right: 20px;
+      background: rgba(0, 0, 0, 0.7); color: white;
+      border: 2px solid var(--accent-red); border-radius: 50%;
+      width: 45px; height: 45px; cursor: pointer; z-index: 1001;
+      display: flex; justify-content: center; align-items: center; font-size: 20px;
+    }
+
+    #settingsPanel {
+      display: none; position: fixed; top: 75px; right: 20px;
+      background: var(--panel-bg); border: 2px solid var(--accent-red);
+      padding: 20px; border-radius: 12px; z-index: 1001;
+      color: var(--text-color); width: 300px; 
+      box-shadow: 0 15px 50px rgba(0,0,0,0.8);
+      max-height: 85vh; overflow-y: auto;
+    }
+
+    .settings-divider { height: 1px; background: var(--accent-red); margin: 15px 0; opacity: 0.3; }
+    .settings-row { margin-bottom: 12px; font-size: 14px; }
+    .settings-input { 
+      width: 94%; background: var(--input-bg); color: var(--text-color); 
+      border: 1px solid var(--accent-red); padding: 8px; border-radius: 6px; margin-top: 5px;
+    }
+
+    .btn-group { display: flex; gap: 5px; margin-top: 5px; }
+    .small-btn { flex: 1; padding: 6px; font-size: 11px; cursor: pointer; border-radius: 4px; border: none; background: #444; color: white; transition: 0.2s; }
+    .small-btn:hover { background: var(--accent-red); }
+
+    #theaterMode {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: black; z-index: 9999; flex-direction: column;
+    }
+
+    #theaterBar {
+      height: 50px; background: var(--theater-bar-bg); 
+      display: flex; justify-content: flex-end; align-items: center;
+      padding: 0 15px; gap: 10px; border-bottom: 1px solid var(--accent-red);
+    }
+
+    #theaterBar button {
+      padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid var(--accent-red);
+    }
+
+    iframe { flex: 1; border: none; width: 100%; height: 100%; }
+
+    .controls-wrapper { display: flex; gap: 10px; margin-bottom: 30px; z-index: 10; width: 100%; max-width: 600px; }
+    .control-input {
+      padding: 12px; border-radius: 8px; border: 2px solid var(--search-border);
+      background-color: var(--input-bg); color: var(--text-color); flex: 1; outline: none;
+    }
+
+    .button-container {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px; max-width: 1200px; width: 100%; z-index: 10;
+    }
+
+    .game-button {
+      background-color: var(--btn-bg); color: var(--text-color);
+      border: 2px solid var(--accent-red); padding: 15px;
+      border-radius: 8px; cursor: pointer; transition: 0.3s;
+      font-weight: bold; display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .game-button:hover { background-color: var(--accent-red); color: white; transform: scale(1.03); }
+    .game-button.favorite { border-color: gold; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+
+    .site-title {
+      color: var(--accent-red); font-size: clamp(24px, 8vw, 48px); text-transform: uppercase; letter-spacing: 4px;
+      margin-top: 40px; margin-bottom: 10px; z-index: 10; text-align: center; font-weight: 900;
+    }
+
+    .panic-badge {
+      background: rgba(255,0,0,0.2); padding: 5px 15px; border-radius: 20px; font-size: 12px;
+      margin-bottom: 20px; border: 1px solid var(--accent-red); animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+  </style>
+</head>
+<body>
+
+<div id="background-layer"></div>
+<div id="tint-overlay"></div>
+
+<button id="settingsToggle" onclick="toggleSettings()">⚙️</button>
+
+<div id="settingsPanel">
+  <h3 style="margin-top:0; color:var(--accent-red); text-align:center;">Hub Terminal</h3>
+  <div class="settings-row"><label><input type="checkbox" id="themeToggle" onchange="updateTheme()"> Light Mode</label></div>
+  <div class="settings-row"><label><input type="checkbox" id="tintToggle" onchange="updateTint()"> Red Tint Overlay</label></div>
+  <div class="settings-row"><label><input type="checkbox" id="freezeToggle" onchange="updateFreeze()"> Enable Tab-Freeze</label></div>
+  <div class="settings-row"><label><input type="checkbox" id="lowPowerToggle" onchange="updateLowPower()"> Low Power Mode</label></div>
+  <div class="settings-row"><label><input type="checkbox" id="autoPanicToggle" onchange="updateAutoPanic()"> Auto-Panic on Focus Loss ⚠️</label></div>
+  <div class="settings-divider"></div>
+  <h4 style="margin:0; color:#ff8888;">🕵️ Stealth System</h4>
+  <div class="settings-row">
+    <label>Cloak Preset:</label>
+    <select id="cloakSelect" class="settings-input" onchange="applyCloakPreset()">
+      <option value="none">None</option>
+      <option value="classroom">Google Classroom</option>
+      <option value="drive">Google Drive</option>
+      <option value="canvas">Canvas</option>
+    </select>
+  </div>
+  <div class="settings-row">
+    <label>Panic Key:</label>
+    <input type="text" id="panicKeyInput" class="settings-input" value="`" maxlength="1" onkeyup="updatePanicKey()">
+  </div>
+  <div class="btn-group">
+    <button onclick="launchAboutBlank()" class="small-btn" style="background:#222;">About:Blank 👻</button>
+    <button onclick="tabDestroyer()" class="small-btn" style="background:#500;">Kill Tab 💀</button>
+  </div>
+  <div class="settings-divider"></div>
+  <h4 style="margin:0; color:#88ff88;">💾 Cloud Save</h4>
+  <div class="btn-group">
+    <button onclick="exportData()" class="small-btn">Export Save</button>
+    <button onclick="importData()" class="small-btn">Import Save</button>
+  </div>
+  <div class="settings-divider"></div>
+  <button onclick="resetSettings()" style="background:#111; color:gray; border:none; padding:8px; width:100%; border-radius:5px; cursor:pointer; font-size:11px;">Factory Reset Site</button>
+</div>
+
+<div id="theaterMode">
+  <div id="theaterBar">
+    <button style="background:#333; color:white;" onclick="goFullScreen()">⛶ Fullscreen</button>
+    <button style="background:var(--accent-red); color:white;" onclick="closeTheater()">✕ Close</button>
+  </div>
+  <iframe id="gameIframe" src=""></iframe>
+</div>
+
+<h1 class="site-title">ItTommy22Toad's Gamehub</h1>
+<div class="panic-badge">Panic Key: <b id="pKeyDisplay">`</b></div>
+
+<div class="controls-wrapper">
+  <input type="text" id="gameSearch" class="control-input" onkeyup="handleSearch()" placeholder="Search library...">
+  <select id="sortSelect" class="control-input" style="max-width:120px;" onchange="sortGames()">
+    <option value="default">Default</option>
+    <option value="az">A-Z</option>
+    <option value="za">Z-A</option>
+  </select>
+</div>
+
+<div class="button-container" id="gameContainer">
+  <button class="game-button" data-url="help-with-something.html">ChatBot AI by ItTommy22Toad</button>
+  <button class="game-button" data-url="chat.html">ChatApp by ItTommy22Toad</button>
+  <button class="game-button" data-url="1.8.8.html">Minecraft 1.8.8</button>
+  <button class="game-button" data-url="1.12.2.1.html">Minecraft 1.12.2</button>
+  <button class="game-button" data-url="1.5.2.html">Minecraft 1.5.2</button>
+  <button class="game-button" data-url="1.2.6.html">Minecraft alpha 1.2.6</button>
+  <button class="game-button" data-url="baldis-basics.html">Baldi's basics</button>
+  <button class="game-button" data-url="baldis-basics-plus.html">Baldi's basics +</button>
+  <button class="game-button" data-url="doom.html">Doom</button>
+  <button class="game-button" data-url="doom-2.html">Doom 2</button>
+  <button class="game-button" data-url="doom-3.html">Doom 3</button>
+  <button class="game-button" data-url="cg-fc-25.html">CG FC 25</button>
+  <button class="game-button" data-url="fnaf.html">Five Nights at freddys</button>
+  <button class="game-button" data-url="fnaf-world.html">Five Nights at freddys world</button>
+  <button class="game-button" data-url="fruit-ninja.html">Fruit Ninja</button>
+  <button class="game-button" data-url="geometry-dash.html">Geometry Dash</button>
+  <button class="game-button" data-url="google-feud.html">Google Feud</button>
+  <button class="game-button" data-url="hill-climb-racing.html">Hill Climb Racing</button>
+  <button class="game-button" data-url="pizza-tower.html">Pizza Tower</button>
+  <button class="game-button" data-url="raft.html">Raft</button>
+  <button class="game-button" data-url="retro-bowl-college.html">Retro Bowl College</button>
+  <button class="game-button" data-url="slope.html">Slope</button>
+  <button class="game-button" data-url="slope-2.html">Slope 2</button>
+  <button class="game-button" data-url="sonic-dc.html">Sonic DC</button>
+  <button class="game-button" data-url="sonic-mania.html">sonic-mania</button>
+  <button class="game-button" data-url="sonic-the-hedgehog-2-Communitys-cut.html">Sonic The Hedgehog 2 Community's Cut</button>
+  <button class="game-button" data-url="sonic-the-hedgehog-3-angel-island-remastered.html">Sonic The Hedgehog 3 Angel Island Remastered</button>
+  <button class="game-button" data-url="steal-a-brainrot.html">Steal a Brainrot</button>
+  <button class="game-button" data-url="super-mario-64.html">Super Mario 64</button>
+  <button class="game-button" data-url="super-mario-bros.html">Super Mario Bros</button>
+  <button class="game-button" data-url="temple-run-2.html">Temple Run 2</button>
+  <button class="game-button" data-url="tomb-of-the-mask.html">Tomb Of The Mask</button>
+  <button class="game-button" data-url="uwu.html">OVO</button>
+  <button class="game-button" data-url="fnaw.html">Five Nights at Winston</button>
+  <button class="game-button" data-url="1w1.html">1v1.lol</button>
+  <button class="game-button" data-url="fnae.html">Five nights at Epstein</button>
+  <button class="game-button" data-url="fnac.html">Five nights at Candy</button>
+  <button class="game-button" data-url="ata.html">Amanda the Adventurer</button>
+  <button class="game-button" data-url="fnalb.html">Five nights at last breath</button>
+  <button class="game-button" data-url="fnaf-2.html">Five nights at freddys 2</button>
+  <button class="game-button" data-url="fnaf-3.html">Five nights at freddys 3</button>
+  <button class="game-button" data-url="fnaf-4.html">Five nights at freddys 4</button>
+  <button class="game-button" data-url="fnaf-4-hallo.html">Five nights at freddys 4 halloween edition </button>
+  <button class="game-button" data-url="fnaf-sl.html">Five nights at freddys Sister Location </button>
+  <button class="game-button" data-url="fnaf-custom.html">Five nights at freddys Ultimate Custom Night </button>
+  <button class="game-button" data-url="fnaf-ps.html">Five nights at freddys Pizza simulator</button>
+  <button class="game-button" data-url="ovo-2.html">OVO 2</button>
+  <button class="game-button" data-url="fnf.html">Friday Night funkin</button>
+  <button class="game-button" data-url="1.21.4.html">Minecraft 1.21.4 Fake</button>
+  <button class="game-button" data-url="ovo-3d.html">OVO 3D</button>
+  <button class="game-button" data-url="faw-2.html">Fireboy and Watergirl 2</button>
+  <button class="game-button" data-url="b1.7.3.html">Minecraft Beta 1.7.3</button>
+  <button class="game-button" data-url="b1.3.html">Minecraft Beta 1.3</button>
+  <button class="game-button" data-url="indev.html">Minecraft Indev</button>
+  <button class="game-button" data-url="64_in_1_nes.html">64 In 1 NES Games</button>
+  <button class="game-button" data-url="bloxd_io.html">Bloxd.io</button>
+  <button class="game-button" data-url="bloxd_io_2.html">Bloxd.io #2</button>
+  <button class="game-button" data-url="pixel_gun.html">Pixel Gun survival</button>
+  <button class="game-button" data-url="slither_io.html">Slither.io</button>
+  <button class="game-button" data-url="steal_brainrot_online.html">Steal Brainrot Online</button>
+  <button class="game-button" data-url="bitlife.html">Bitlife</button>
+  <button class="game-button" data-url="clash_of_vikings.html">Clash of Clans Fake</button>
+  <button class="game-button" data-url="baldis_basics_classic_remastered.html">Baldi's Basics Classic Remastered</button>
+  <button class="game-button" data-url="retro_bowl.html">Retro Bowl</button>
+  <button class="game-button" data-url="tetris.html">Tetris</button>
+  <button class="game-button" data-url="cookie_clicker.html">Cookie Clicker</button>
+  <button class="game-button" data-url="tomodachi_collection.html">Tomodachi Collection</button>
+  <button class="game-button" data-url="pokemon_fire_red.html">Pokemon Fire Red</button>
+  <button class="game-button" data-url="zelda_ocarina_of_time.html">Zelda Ocarina of Time</button>
+  <button class="game-button" data-url="zelda_majoras_mask.html">Zelda majora's Mask</button>
+  <button class="game-button" data-url="pokemon_heartgold.html">Pokemon HeartGold</button>
+  <button class="game-button" data-url="terraria.html">Terraria</button>
+  <button class="game-button" data-url="pizza_tower_scoutdigo.html">Pizza Tower Scoutdigo</button>
+  <button class="game-button" data-url="bad_monday_simulator.html">bad monday Simulator</button>
+  <button class="game-button" data-url="uno.html">Uno 'Scratch'</button>
+  <button class="game-button" data-url="granny.html">Granny</button>
+  <button class="game-button" data-url="kindergarten.html">Kindergarten</button>
+  <button class="game-button" data-url="kindergarten-2.html">Kindergarten 2</button>
+  <button class="game-button" data-url="kindergarten-3.html">Kindergarten 3</button>
+  <button class="game-button" data-url="aequeosalinocalcalinoceraceoaluminosocupreovitriolic.html">Proxy'</button>
+  <button class="game-button" data-url="work-from-class.gif">Click me</button>
+</div>
+
+<script>
+  let favorites = JSON.parse(localStorage.getItem('savedFavorites')) || [];
+  let panicKey = localStorage.getItem('panicKey') || '`';
+  let panicUrl = 'https://classroom.google.com';
+
+  function showReadme() {
+    if (sessionStorage.getItem('readmeSeen') === 'true') return;
+    
+    alert(
+      "📖 READ ME BEFORE VISITING THE SITE\n\n" +
+      "1. WebGL Games: If games like Minecraft or Slope won't load, your GPU is likely crashed.\n" +
+      "2. The Fix: Type 'chrome://restart' in your URL bar. It reloads Chrome instantly and fixes the lag without making you re-log or use a password.\n" +
+      "3. Panic Key: The default panic key is '`' (tilde). It sends you to Google Classroom instantly.\n" +
+      "4. Right Click: You can Right-Click any game to Favorite it.\n" +
+      "5. Settings: Use the ⚙️ icon to enable Auto-Panic or Tab-Cloaking."
+    );
+    
+    sessionStorage.setItem('readmeSeen', 'true');
+  }
+
+  window.onload = function() {
+    showReadme();
+    
+    document.getElementById('pKeyDisplay').innerText = panicKey;
+    if (localStorage.getItem('lightMode') === 'true') { document.getElementById('themeToggle').checked = true; updateTheme(); }
+    if (localStorage.getItem('redTint') === 'true') { document.getElementById('tintToggle').checked = true; updateTint(); }
+    if (localStorage.getItem('freeze') === 'true') { document.getElementById('freezeToggle').checked = true; updateFreeze(); }
+    if (localStorage.getItem('lowPower') === 'true') { document.getElementById('lowPowerToggle').checked = true; updateLowPower(); }
+    if (localStorage.getItem('autoPanic') === 'true') { document.getElementById('autoPanicToggle').checked = true; }
+    
+    applyCloakPreset(false);
+    loadGrid();
+  };
+
+  function loadGrid() {
+    document.querySelectorAll('.game-button').forEach((btn, index) => {
+      btn.dataset.index = index;
+      const name = btn.innerText.replace('⭐','').trim();
+      btn.innerHTML = favorites.includes(name) ? `<span>${name}</span> ⭐` : `<span>${name}</span>`;
+      btn.classList.toggle('favorite', favorites.includes(name));
+    });
+    sortGames();
+  }
+
+  window.onblur = function() {
+    if (document.getElementById('autoPanicToggle').checked) window.location.replace(panicUrl);
+  };
+
+  function updateAutoPanic() { localStorage.setItem('autoPanic', document.getElementById('autoPanicToggle').checked); }
+  function exportData() { const data = btoa(JSON.stringify(localStorage)); prompt("Copy code:", data); }
+  function importData() { const data = prompt("Paste code:"); if (data) { try { const decoded = JSON.parse(atob(data)); Object.keys(decoded).forEach(k => localStorage.setItem(k, decoded[k])); location.reload(); } catch(e) { alert("Error."); } } }
+  function tabDestroyer() { window.open("https://google.com", "_self"); window.close(); }
+  function updateFreeze() { const active = document.getElementById('freezeToggle').checked; localStorage.setItem('freeze', active); window.onbeforeunload = active ? () => "Confirm" : null; }
+  function updateLowPower() { const active = document.getElementById('lowPowerToggle').checked; localStorage.setItem('lowPower', active); document.getElementById('background-layer').style.display = active ? 'none' : 'block'; }
+  function updatePanicKey() { panicKey = document.getElementById('panicKeyInput').value || '`'; document.getElementById('pKeyDisplay').innerText = panicKey; localStorage.setItem('panicKey', panicKey); }
+
+  document.addEventListener('keydown', (e) => {
+    if(e.target.tagName !== "INPUT" && e.key === panicKey) window.location.replace(panicUrl);
+  });
+
+  function applyCloakPreset(save = true) {
+    const val = document.getElementById('cloakSelect').value || localStorage.getItem('cloakPreset') || 'none';
+    if(save) localStorage.setItem('cloakPreset', val);
+    const presets = {
+      classroom: ["Classes", "https://ssl.gstatic.com/classroom/favicon.png"],
+      drive: ["My Drive - Google Drive", "https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png"],
+      canvas: ["Dashboard", "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico"]
+    };
+    if(presets[val]) {
+      document.title = presets[val][0];
+      document.getElementById('dynamicFavicon').href = presets[val][1];
+    }
+  }
+
+  function launchAboutBlank() {
+    let win = window.open('about:blank', '_blank');
+    let iframe = win.document.createElement('iframe');
+    iframe.style = "width:100vw;height:100vh;border:none;margin:0;padding:0;";
+    iframe.src = window.location.href;
+    win.document.body.style.margin = "0";
+    win.document.body.appendChild(iframe);
+    window.location.replace(panicUrl);
+  }
+
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.game-button');
+    if(btn) { e.preventDefault(); openTheater(btn.dataset.url); }
+  });
+
+  function openTheater(url) { document.getElementById('gameIframe').src = url; document.getElementById('theaterMode').style.display = 'flex'; }
+  function closeTheater() { document.getElementById('gameIframe').src = ''; document.getElementById('theaterMode').style.display = 'none'; }
+  function goFullScreen() { const f = document.getElementById('gameIframe'); f.requestFullscreen?.() || f.webkitRequestFullscreen?.(); }
+
+  document.addEventListener('contextmenu', e => {
+    const btn = e.target.closest('.game-button');
+    if(btn) {
+      e.preventDefault();
+      const name = btn.innerText.replace('⭐','').trim();
+      favorites.includes(name) ? favorites = favorites.filter(f => f !== name) : favorites.push(name);
+      localStorage.setItem('savedFavorites', JSON.stringify(favorites));
+      loadGrid();
+    }
+  });
+
+  function sortGames() {
+    const container = document.getElementById('gameContainer');
+    const buttons = Array.from(container.querySelectorAll('.game-button'));
+    const sort = document.getElementById('sortSelect').value;
+    buttons.sort((a,b) => {
+      const favA = a.classList.contains('favorite'), favB = b.classList.contains('favorite');
+      if(favA !== favB) return favA ? -1 : 1;
+      if(sort === 'az') return a.innerText.localeCompare(b.innerText);
+      if(sort === 'za') return b.innerText.localeCompare(a.innerText);
+      return a.dataset.index - b.dataset.index;
+    });
+    buttons.forEach(b => container.appendChild(b));
+  }
+
+  function handleSearch() {
+    const q = document.getElementById('gameSearch').value.toLowerCase();
+    document.querySelectorAll('.game-button').forEach(b => {
+      b.style.display = b.innerText.toLowerCase().includes(q) ? "" : "none";
+    });
+  }
+
+  function toggleSettings() { const p = document.getElementById('settingsPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; }
+  function updateTheme() { document.body.classList.toggle('light-mode', document.getElementById('themeToggle').checked); localStorage.setItem('lightMode', document.getElementById('themeToggle').checked); }
+  function updateTint() { document.getElementById('tint-overlay').style.display = document.getElementById('tintToggle').checked ? 'block' : 'none'; localStorage.setItem('redTint', document.getElementById('tintToggle').checked); }
+  function resetSettings() { localStorage.clear(); location.reload(); }
+  
+  window.addEventListener('mousemove', (e) => {
+    if(localStorage.getItem('lowPower') === 'true') return;
+    let x = (e.clientX / window.innerWidth) * 20, y = (e.clientY / window.innerHeight) * 20;
+    document.getElementById('background-layer').style.transform = `translate(-${x}px, -${y}px)`;
+  });
+</script>
+
+</body>
+</html>
