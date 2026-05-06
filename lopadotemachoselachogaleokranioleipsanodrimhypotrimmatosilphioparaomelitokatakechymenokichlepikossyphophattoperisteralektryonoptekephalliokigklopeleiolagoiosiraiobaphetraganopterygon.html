@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="tabTitle">Home</title>
-  <link id="dynamicFavicon" rel="icon" type="image/x-icon" href="https://homeworkkk-green.vercel.app/favicon.png">
+  <link id="dynamicFavicon" rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png">
 
   <style>
     :root {
@@ -48,7 +48,7 @@
     #background-layer {
       position: fixed;
       top: -10%; left: -10%; width: 120%; height: 120%;
-      background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop');
+      background-image: url('https://tommys-free-lessons.vercel.app/wallpaper.png');
       background-size: cover;
       background-position: center;
       z-index: -1;
@@ -338,8 +338,8 @@
   };
 
   function updateAutoPanic() { localStorage.setItem('autoPanic', document.getElementById('autoPanicToggle').checked); }
-  function exportData() { const data = btoa(JSON.stringify(localStorage)); prompt("Copy code:", data); }
-  function importData() { const data = prompt("Paste code:"); if (data) { try { const decoded = JSON.parse(atob(data)); Object.keys(decoded).forEach(k => localStorage.setItem(k, decoded[k])); location.reload(); } catch(e) { alert("Error."); } } }
+  function exportData() { const data = btoa(JSON.stringify(localStorage)); prompt("Copy code and save it in a doc or smth:", data); }
+  function importData() { const data = prompt("Paste code from the one you saved:"); if (data) { try { const decoded = JSON.parse(atob(data)); Object.keys(decoded).forEach(k => localStorage.setItem(k, decoded[k])); location.reload(); } catch(e) { alert("Error."); } } }
   function tabDestroyer() { window.open("https://google.com", "_self"); window.close(); }
   function updateFreeze() { const active = document.getElementById('freezeToggle').checked; localStorage.setItem('freeze', active); window.onbeforeunload = active ? () => "Confirm" : null; }
   function updateLowPower() { const active = document.getElementById('lowPowerToggle').checked; localStorage.setItem('lowPower', active); document.getElementById('background-layer').style.display = active ? 'none' : 'block'; }
