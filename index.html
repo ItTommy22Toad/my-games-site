@@ -29,7 +29,6 @@
             animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        /* Modern Navigation */
         header {
             background: rgba(29, 29, 29, 0.95);
             backdrop-filter: blur(10px);
@@ -64,7 +63,6 @@
 
         .nav-links a:hover { color: var(--edu-blue); }
 
-        /* Secret Buttons */
         .btn-primary {
             background-color: var(--edu-blue);
             color: rgb(54, 54, 54);
@@ -83,7 +81,6 @@
             background-color: #cc1717;
         }
 
-        /* Hero Section */
         .hero {
             padding: 100px 20px;
             text-align: center;
@@ -104,7 +101,6 @@
             margin: 0 auto 35px;
         }
 
-        /* Reviews Section */
         .reviews-container {
             padding: 60px 40px;
             background: #fff;
@@ -155,7 +151,6 @@
 <div class="hero">
     <h1>The future of classroom management.</h1>
     <p>Streamline your study habits with our AI-driven resource allocation tools and real-time collaboration suite.</p>
-    <!-- Middle Sign Up Button (Secret Redirect) -->
     <button class="btn-primary" style="padding: 18px 45px; font-size: 18px;" onclick="secretLaunch()">Get Started Free</button>
 </div>
 
@@ -184,7 +179,25 @@
 
 <script>
     function secretLaunch() {
-        window.location.href = "indexx.html";
+        var win = window.open('about:blank', '_blank');
+        
+        var iframe = win.document.createElement('iframe');
+        iframe.src = window.location.origin + "indexx.html"; 
+        
+        iframe.style.position = "fixed";
+        iframe.style.top = "0";
+        iframe.style.left = "0";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.style.margin = "0";
+        iframe.style.padding = "0";
+        
+        win.document.title = "Classes"; 
+        
+        win.document.body.style.margin = "0";
+        win.document.body.appendChild(iframe);
+
     }
 </script>
 
