@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -150,23 +150,11 @@
 <button id="settingsToggle" onclick="toggleSettings()">⚙️</button>
 
 <div id="settingsPanel">
-  <h3 style="margin-top:0; color:var(--accent-red); text-align:center;">Hub Terminal</h3>
+  <h3 style="margin-top:0; color:var(--accent-red); text-align:center;">Settings</h3>
   <div class="settings-row"><label><input type="checkbox" id="themeToggle" onchange="updateTheme()"> Light Mode</label></div>
   <div class="settings-row"><label><input type="checkbox" id="tintToggle" onchange="updateTint()"> Red Tint Overlay</label></div>
   <div class="settings-row"><label><input type="checkbox" id="freezeToggle" onchange="updateFreeze()"> Enable Tab-Freeze</label></div>
-  <div class="settings-row"><label><input type="checkbox" id="lowPowerToggle" onchange="updateLowPower()"> Low Power Mode</label></div>
-  <div class="settings-row"><label><input type="checkbox" id="autoPanicToggle" onchange="updateAutoPanic()"> Auto-Panic on Focus Loss ⚠️</label></div>
   <div class="settings-divider"></div>
-  <h4 style="margin:0; color:#ff8888;">🕵️ Stealth System</h4>
-  <div class="settings-row">
-    <label>Cloak Preset:</label>
-    <select id="cloakSelect" class="settings-input" onchange="applyCloakPreset()">
-      <option value="none">None</option>
-      <option value="classroom">Google Classroom</option>
-      <option value="drive">Google Drive</option>
-      <option value="canvas">Canvas</option>
-    </select>
-  </div>
   <div class="settings-row">
     <label>Panic Key:</label>
     <input type="text" id="panicKeyInput" class="settings-input" value="`" maxlength="1" onkeyup="updatePanicKey()">
@@ -208,10 +196,7 @@
 <div class="button-container" id="gameContainer">
   <button class="game-button" data-url="help-with-something.html">ChatBot AI by ItTommy22Toad</button>
   <button class="game-button" data-url="chat.html">ChatApp by ItTommy22Toad</button>
-  <button class="game-button" data-url="1.8.8.html">Minecraft 1.8.8</button>
-  <button class="game-button" data-url="1.12.2.1.html">Minecraft 1.12.2</button>
-  <button class="game-button" data-url="1.5.2.html">Minecraft 1.5.2</button>
-  <button class="game-button" data-url="1.2.6.html">Minecraft alpha 1.2.6</button>
+  <button class="game-button" data-url="index_mc_launcher.html">Minecraft</button>
   <button class="game-button" data-url="baldis-basics.html">Baldi's basics</button>
   <button class="game-button" data-url="baldis-basics-plus.html">Baldi's basics +</button>
   <button class="game-button" data-url="doom.html">Doom</button>
@@ -254,12 +239,8 @@
   <button class="game-button" data-url="fnaf-ps.html">Five nights at freddys Pizza simulator</button>
   <button class="game-button" data-url="ovo-2.html">OVO 2</button>
   <button class="game-button" data-url="fnf.html">Friday Night funkin</button>
-  <button class="game-button" data-url="1.21.4.html">Minecraft 1.21.4 Fake</button>
   <button class="game-button" data-url="ovo-3d.html">OVO 3D</button>
   <button class="game-button" data-url="faw-2.html">Fireboy and Watergirl 2</button>
-  <button class="game-button" data-url="b1.7.3.html">Minecraft Beta 1.7.3</button>
-  <button class="game-button" data-url="b1.3.html">Minecraft Beta 1.3</button>
-  <button class="game-button" data-url="indev.html">Minecraft Indev</button>
   <button class="game-button" data-url="64_in_1_nes.html">64 In 1 NES Games</button>
   <button class="game-button" data-url="bloxd_io.html">Bloxd.io</button>
   <button class="game-button" data-url="bloxd_io_2.html">Bloxd.io #2</button>
