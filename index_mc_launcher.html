@@ -4,40 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tommy's MC launcher</title>
+    <style>
+        body {
+            background-color: #808080; /* Sets background to gray */
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Title -->
     <h1>Tommy’s MC launcher</h1>
-
-    <!-- Subtitle / Instructions -->
-    <p>Select a version and click “Launch version to play that version of Minecraft</p>
-
-    <!-- Version Selection Dropdown -->
+    <p>Select a version and click “Launch version” to play that version of Minecraft</p>
     <div>
         <select id="versionSelect">
             <option value="" disabled selected>Select version</option>
-            <option value="1.14.4.html">1.14.4</option>
-            <option value="1.12.2.html">1.12.2</option>
-            <option value="1.8.8.html">1.8.8</option>
-            <option value="1.5.2.html">1.5.2</option>
-            <option value="b-1.7.3.html">b-1.7.3</option>
-            <option value="b-1.3.html">b-1.3</option>
-            <option value="a-1.2.6.html">a-1.2.6</option>
+            <option value="1.14.4/1.14.4.html">Minecraft 1.14.4</option>
+            <option value="1.12.2.html">Minecraft 1.12.2</option>
+            <option value="1.8.8.html">Minecraft 1.8.8</option>
+            <option value="1.5.2.html">Minecraft 1.5.2</option>
+            <option value="b-1.7.3.html">Minecraft Beta 1.7.3</option>
+            <option value="b-1.3.html">Minecraft Beta1.3</option>
+            <option value="a-1.2.6.html">Minecraft Alpha1.2.6</option>
             <option value="indev.html">indev</option>
         </select>
     </div>
 
     <br>
-
-    <!-- Launch Button -->
     <div>
         <button onclick="launchVersion()">Launch version</button>
     </div>
 
     <br><br>
-
-    <!-- Resource Pack Link Button -->
     <div>
         <button onclick="window.open('https://drive.google.com/drive/folders/1N4VHur_mavdDkvNtTi2Id3nQqMyTihXt?usp=sharing', '_blank')">
             Want to add resourcepacks to version 1.12.2 click here
@@ -54,7 +50,7 @@
                 // Redirects the current tab to domain.com/[version].html
                 window.location.href = selectedVersion;
             } else {
-                alert('Please select a version first!');
+                alert('Um, youre suppose to select a version to launch.');
             }
         }
     </script>
