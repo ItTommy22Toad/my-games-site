@@ -1,6 +1,16 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+# this is only to send me data of how many user visit this site [starting point]
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-84V4Q7FZPR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-84V4Q7FZPR');
+</script>
+# this is only to send me data of how many user visit this site [ending point point]
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="tabTitle">Home</title>
@@ -15,7 +25,7 @@
       --btn-bg: rgba(46, 1, 1, 0.9);
       --input-bg: #222;
       --search-border: #560101;
-      --theater-bar-bg: #111;
+      --theater-bar-bg: #111111; 
       --theater-btn-bg: #444;
     }
 
@@ -27,7 +37,7 @@
       --btn-bg: #ffffff;
       --input-bg: #ffffff;
       --search-border: #ff4d4d;
-      --theater-bar-bg: #ffffff;
+      --theater-bar-bg: #ffffff; 
       --theater-btn-bg: #eeeeee;
     }
 
@@ -63,6 +73,37 @@
       z-index: 5; display: none; pointer-events: none;
     }
 
+    /* Top Bar for Minimized Apps */
+    #minimizedBar {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+      flex-wrap: wrap;
+      max-width: calc(100vw - 100px); 
+    }
+
+    .minimized-btn {
+      background: #ffffff;
+      color: #111111;
+      border: 1px solid var(--accent-red);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      transition: all 0.2s ease;
+    }
+
+    .minimized-btn:hover {
+      background: var(--accent-red);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
     #settingsToggle {
       position: fixed; top: 20px; right: 20px;
       background: rgba(0, 0, 0, 0.7); color: white;
@@ -91,22 +132,51 @@
     .small-btn { flex: 1; padding: 6px; font-size: 11px; cursor: pointer; border-radius: 4px; border: none; background: #444; color: white; transition: 0.2s; }
     .small-btn:hover { background: var(--accent-red); }
 
+    /* Theater Mode & Video Background */
     #theaterMode {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: black; z-index: 9999; flex-direction: column;
+      background: black; z-index: 9999; flex-direction: column; overflow: hidden;
+    }
+
+    #theaterBgVideo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain; 
+      z-index: 0;
+      pointer-events: none; 
     }
 
     #theaterBar {
       height: 50px; background: var(--theater-bar-bg); 
       display: flex; justify-content: flex-end; align-items: center;
       padding: 0 15px; gap: 10px; border-bottom: 1px solid var(--accent-red);
+      z-index: 10; position: relative;
     }
 
     #theaterBar button {
       padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid var(--accent-red);
     }
 
-    iframe { flex: 1; border: none; width: 100%; height: 100%; }
+    #iframeContainer {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: calc(100% - 50px); 
+      z-index: 5;
+    }
+
+    #iframeContainer iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent; 
+    }
 
     .controls-wrapper { display: flex; gap: 10px; margin-bottom: 30px; z-index: 10; width: 100%; max-width: 600px; }
     .control-input {
@@ -131,7 +201,7 @@
 
     .site-title {
       color: var(--accent-red); font-size: clamp(24px, 8vw, 48px); text-transform: uppercase; letter-spacing: 4px;
-      margin-top: 40px; margin-bottom: 10px; z-index: 10; text-align: center; font-weight: 900;
+      margin-top: 50px; margin-bottom: 10px; z-index: 10; text-align: center; font-weight: 900;
     }
 
     .panic-badge {
@@ -144,6 +214,7 @@
 </head>
 <body>
 
+<div id="minimizedBar"></div>
 <div id="background-layer"></div>
 <div id="tint-overlay"></div>
 
@@ -174,14 +245,18 @@
 </div>
 
 <div id="theaterMode">
+  <video id="theaterBgVideo" src="loadingscreen.mp4" autoplay loop muted playsinline disablePictureInPicture></video>
+  
   <div id="theaterBar">
+    <button id="theaterStarBtn" style="background:#333; color:gold;" onclick="toggleCurrentFavorite()">⭐ Favorite</button>
+    <button id="minimizeBtn" style="background:var(--theater-btn-bg); color:white;" onclick="minimizeGame()">🗕 Minimize</button>
     <button style="background:#333; color:white;" onclick="goFullScreen()">⛶ Fullscreen</button>
     <button style="background:var(--accent-red); color:white;" onclick="closeTheater()">✕ Close</button>
   </div>
-  <iframe id="gameIframe" src=""></iframe>
+  <div id="iframeContainer"></div>
 </div>
 
-<h1 class="site-title">ItTommy22Toad's GeayMehub</h1>
+<h1 class="site-title">Tommy's Free lessons</h1>
 <div class="panic-badge">Panic Key: <b id="pKeyDisplay">`</b></div>
 
 <div class="controls-wrapper">
@@ -274,17 +349,23 @@
   let favorites = JSON.parse(localStorage.getItem('savedFavorites')) || [];
   let panicKey = localStorage.getItem('panicKey') || '`';
   let panicUrl = 'https://classroom.google.com';
+  
+  // App Management State
+  let runningApps = {}; 
+  let minimizedApps = [];
+  let currentActiveAppName = null;
 
   function showReadme() {
     if (sessionStorage.getItem('readmeSeen') === 'true') return;
     
     alert(
-      "📖 READ ME BEFORE VISITING THE SITE\n\n" +
-      "1. WebGL Games: If games like Minecraft or Slope won't load, your GPU is likely crashed.\n" +
-      "2. The Fix: Type 'chrome://restart' in your URL bar. It reloads Chrome instantly and fixes the lag without making you re-log or use a password.\n" +
-      "3. Panic Key: The default panic key is '`' (tilde). It sends you to Google Classroom instantly.\n" +
-      "4. Right Click: You can Right-Click any game to Favorite it.\n" +
-      "5. Settings: Use the ⚙️ icon to enable Auto-Panic or Tab-Cloaking."
+      "Hello, welcome to my site!\n" +
+      "\n" +
+      "This site contants over 32+ games and may add more, we got the games from gn-math\n" +
+      "before you play, here are somethings to know\n" +
+      "1. this site is expermental as of now, we added cool featues like multitasking and stuff\n" +
+      "2. all these games are not mine expect for some, refer to the readme @ https://github.com/ItTommy22Toad/my-games-site/blob/main/README.md \n"+
+      "3. if the site freezez and the games dont load, it possibly the weblg got disabled, if so, just restart your chromebook or pc\n\n\nItTommy22Toad."
     );
     
     sessionStorage.setItem('readmeSeen', 'true');
@@ -315,7 +396,7 @@
   }
 
   window.onblur = function() {
-    if (document.getElementById('autoPanicToggle').checked) window.location.replace(panicUrl);
+    if (document.getElementById('autoPanicToggle') && document.getElementById('autoPanicToggle').checked) window.location.replace(panicUrl);
   };
 
   function updateAutoPanic() { localStorage.setItem('autoPanic', document.getElementById('autoPanicToggle').checked); }
@@ -331,7 +412,8 @@
   });
 
   function applyCloakPreset(save = true) {
-    const val = document.getElementById('cloakSelect').value || localStorage.getItem('cloakPreset') || 'none';
+    const cloakSelect = document.getElementById('cloakSelect');
+    const val = (cloakSelect && cloakSelect.value) || localStorage.getItem('cloakPreset') || 'none';
     if(save) localStorage.setItem('cloakPreset', val);
     const presets = {
       classroom: ["Classes", "https://ssl.gstatic.com/classroom/favicon.png"],
@@ -356,12 +438,128 @@
 
   document.addEventListener('click', e => {
     const btn = e.target.closest('.game-button');
-    if(btn) { e.preventDefault(); openTheater(btn.dataset.url); }
+    if(btn) { 
+      e.preventDefault(); 
+      const name = btn.innerText.replace('⭐','').trim();
+      const url = btn.dataset.url;
+      openTheaterByName(name, url);
+    }
   });
 
-  function openTheater(url) { document.getElementById('gameIframe').src = url; document.getElementById('theaterMode').style.display = 'flex'; }
-  function closeTheater() { document.getElementById('gameIframe').src = ''; document.getElementById('theaterMode').style.display = 'none'; }
-  function goFullScreen() { const f = document.getElementById('gameIframe'); f.requestFullscreen?.() || f.webkitRequestFullscreen?.(); }
+  function openTheaterByName(name, url) {
+    const container = document.getElementById('iframeContainer');
+    
+    // Create iframe if it doesn't exist
+    if (!runningApps[name]) {
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      
+      iframe.sandbox = "allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-popups";
+
+      container.appendChild(iframe);
+      runningApps[name] = { url: url, iframe: iframe };
+    }
+
+    // Hide all other iframes and show only the requested one
+    Object.keys(runningApps).forEach(appName => {
+      runningApps[appName].iframe.style.display = (appName === name) ? 'block' : 'none';
+    });
+
+    currentActiveAppName = name;
+
+    // Open theater mode
+    document.getElementById('theaterMode').style.display = 'flex';
+    
+    // RESTART VIDEO WHEN LAUNCHING
+    const bgVideo = document.getElementById('theaterBgVideo');
+    if (bgVideo) {
+      bgVideo.currentTime = 0; 
+      bgVideo.play().catch(() => {});
+    }
+
+    updateTheaterStar();
+    renderMinimizedBar();
+  }
+
+  function minimizeGame() {
+    alert("Some browsers might flag this as ClickJacking and even if the browser allows it, it might lag or crash the site due to low memory and bad hardware!");
+    
+    if (currentActiveAppName) {
+      if (!minimizedApps.includes(currentActiveAppName)) {
+        minimizedApps.push(currentActiveAppName);
+      }
+      if (runningApps[currentActiveAppName]) {
+        runningApps[currentActiveAppName].iframe.style.display = 'none';
+      }
+    }
+
+    // Exit theater mode
+    document.getElementById('theaterMode').style.display = 'none';
+    currentActiveAppName = null;
+    renderMinimizedBar();
+  }
+
+  function renderMinimizedBar() {
+    const bar = document.getElementById('minimizedBar');
+    if (!bar) return;
+    bar.innerHTML = '';
+
+    minimizedApps.forEach(appName => {
+      const btn = document.createElement('button');
+      btn.className = 'minimized-btn';
+      btn.innerText = appName;
+      btn.onclick = () => {
+        if (currentActiveAppName && currentActiveAppName !== appName) {
+          if (!minimizedApps.includes(currentActiveAppName)) {
+            minimizedApps.push(currentActiveAppName);
+          }
+        }
+        openTheaterByName(appName, runningApps[appName].url);
+      };
+      bar.appendChild(btn);
+    });
+  }
+
+  function toggleCurrentFavorite() {
+    if (!currentActiveAppName) return;
+    if (favorites.includes(currentActiveAppName)) {
+      favorites = favorites.filter(f => f !== currentActiveAppName);
+    } else {
+      favorites.push(currentActiveAppName);
+    }
+    localStorage.setItem('savedFavorites', JSON.stringify(favorites));
+    loadGrid();
+    updateTheaterStar();
+  }
+
+  function updateTheaterStar() {
+    const starBtn = document.getElementById('theaterStarBtn');
+    if (!starBtn || !currentActiveAppName) return;
+    const isFav = favorites.includes(currentActiveAppName);
+    starBtn.innerText = isFav ? "⭐ Favorited" : "☆ Favorite";
+  }
+
+  function closeTheater() { 
+    if (currentActiveAppName) {
+      const app = runningApps[currentActiveAppName];
+      if (app && app.iframe) {
+        app.iframe.remove();
+      }
+      delete runningApps[currentActiveAppName];
+      minimizedApps = minimizedApps.filter(a => a !== currentActiveAppName);
+      currentActiveAppName = null;
+    }
+
+    document.getElementById('theaterMode').style.display = 'none'; 
+    renderMinimizedBar();
+  }
+
+  function goFullScreen() { 
+    if (currentActiveAppName && runningApps[currentActiveAppName]) {
+      const f = runningApps[currentActiveAppName].iframe;
+      f.requestFullscreen?.() || f.webkitRequestFullscreen?.();
+    }
+  }
 
   document.addEventListener('contextmenu', e => {
     const btn = e.target.closest('.game-button');
@@ -371,6 +569,7 @@
       favorites.includes(name) ? favorites = favorites.filter(f => f !== name) : favorites.push(name);
       localStorage.setItem('savedFavorites', JSON.stringify(favorites));
       loadGrid();
+      if(currentActiveAppName === name) updateTheaterStar();
     }
   });
 
