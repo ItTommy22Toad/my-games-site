@@ -1,5 +1,219 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Hello everyone!</h1>
-<h4>This site is in maintenance mode, meaning its closed <br>from everyone to use, i am so sorry i have to do this but<br> there were some problems. with the site, The site will be<br> back up very very soon.<br><br>Day of shutdown: October 21, 2026<br>Time of shutdown 6:15 PM Pacific Daylight Time GMT-7<br>Reason: main site was not loading, firewall issues<br><br>-ItsTommy22Toad
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | District Learning Portal</title>
+    <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png">
+    <style>
+        :root {
+            --edu-blue: #e81a1a;
+            --edu-dark: #a8a8a9;
+            --edu-gray: #8d8d8e;
+            --bg-light: #313131;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: 'Google Sans', Roboto, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--bg-light);
+            color: var(--edu-dark);
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        header {
+            background: rgba(29, 29, 29, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #373737;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--edu-blue);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--edu-gray);
+            margin: 0 20px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--edu-blue); }
+
+        .btn-primary {
+            background-color: var(--edu-blue);
+            color: #ffffff;
+            padding: 10px 28px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 14px 0 rgba(232, 26, 26, 0.39);
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 26, 26, 0.45);
+            background-color: #cc1717;
+        }
+
+        .hero {
+            padding: 100px 20px;
+            text-align: center;
+            background: radial-gradient(circle at top right, #2e2e2e, #1f1f1f);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--edu-gray);
+            max-width: 600px;
+            margin: 0 auto 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .reviews-container {
+            padding: 60px 40px;
+            background: #252525;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .review-card {
+            background: #313131;
+            padding: 25px;
+            border-radius: 16px;
+            width: 300px;
+            border: 1px solid #444;
+            transition: var(--transition);
+        }
+
+        .review-card:hover { transform: translateY(-10px); }
+
+        .stars { color: #f4b400; margin-bottom: 10px; }
+        .review-text { font-style: italic; font-size: 14px; color: #dddddd; }
+        .reviewer { font-weight: 700; margin-top: 15px; display: block; font-size: 13px; color: var(--edu-blue); }
+
+        footer {
+            border-top: 1px solid #373737;
+            padding: 40px;
+            text-align: center;
+            color: #9aa0a6;
+            font-size: 13px;
+            background-color: #1d1d1d;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+        Tommy's Free lessons
+    </div>
+    <nav class="nav-links">
+        <a href="#">Courses</a>
+        <a href="#">Curriculum</a>
+        <button class="btn-primary" onclick="secretLaunch()">Student Login</button>
+    </nav>
+</header>
+
+<div class="hero">
+    <h1>Tutoring just got even easier</h1>
+    <p>Use our AI-driven programs to help you learn a subject that you dont know, and its free, click register to save your work or login to upload other works from other devices to get started!</p>
+    
+    <div class="hero-buttons">
+        <button class="btn-primary" style="padding: 18px 45px; font-size: 18px;" onclick="window.location.href='https://tommys-free-lessons.base44.app/login'">Login</button>
+        <button class="btn-primary" style="padding: 18px 45px; font-size: 18px;" onclick="window.location.href='https://tommys-free-lessons.base44.app/register'">Register</button>
+    </div>
+</div>
+
+<div class="reviews-container">
+    <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"This is the best tool if you need to learn something knew but either dont have the confidence or the time to go to talk to a teacher, great job!"</p>
+        <span class="reviewer">— John S, 10th grade</span>
+    </div>
+    <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"One of the BEST site ever, it lets me submit my work and the AI generates a step by step for me to understand, and the best part, you can tweak it like 'can you explain it like im new to the subject' now thats cool"</p>
+        <span class="reviewer">— Dave B, 7th grade</span>
+    </div>
+    <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"I got to talk more with myy staff now since this site existed, i got more free time from not tutoring these students, and its free too!"</p>
+        <span class="reviewer">— Mr Smith, University Prep Value HS</span>
+    </div>
+</div>
+
+<footer>
+    © 2025 Tommy's Free lessons - kept free thank to you!<br>
+    "Making learning easy and reliable"
+</footer>
+
+<script>
+    function secretLaunch() {
+        var win = window.open('about:blank', '_blank');
+        if (!win) {
+            alert("Please allow popups for this website to open Student Login.");
+            return;
+        }
+        
+        var iframe = win.document.createElement('iframe');
+        iframe.src = window.location.origin + "/ryhf8hfuwrebsieuygf78erfwierbyvf8eryfvna8seusf8euyisvfb8s7eydgfheryiusvfh8druigh7v8rtuhfgkuctirjogkfcultxiohrjgkfu8ti4urgj8ytuhjqwertyuioiuytrdfghygwtyerfghw78yre98ugtntf7aegrtn6cwfuyerhy7uifgeryuryhf8hfuwrebsieuygf78.html"; 
+        
+        iframe.style.position = "fixed";
+        iframe.style.top = "0";
+        iframe.style.left = "0";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.style.margin = "0";
+        iframe.style.padding = "0";
+        
+        win.document.title = "Classes"; 
+        
+        win.document.body.style.margin = "0";
+        win.document.body.appendChild(iframe);
+    }
+</script>
+
+</body>
+</html>
